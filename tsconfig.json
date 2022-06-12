@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "noImplicitAny": true,
     "declaration": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true,  
     "module": "CommonJS",
     "target": "es5",
     "allowJs": true,
