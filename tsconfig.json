@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "target": "es5",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
