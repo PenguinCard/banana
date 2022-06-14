@@ -1,0 +1,10 @@
+version: '3.0'
+services:
+  kafka:
+    image: kafka
+    extra_hosts:
+      - "broker:0.0.0.0"
+    ports:
+      - "29092:29092"
+    restart: unless-stopped
+
