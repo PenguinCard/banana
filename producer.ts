@@ -4,7 +4,7 @@ import { Kafka } from 'kafkajs';
 (async () => { 
   const kafka = new Kafka({
     clientId: 'my-app',
-    brokers: ['broker:9092'],
+    brokers: ['broker:29092'],
   });
 
   const producer = kafka.producer();
@@ -14,7 +14,7 @@ import { Kafka } from 'kafkajs';
   const [ filePath = '' ] = argv._;
 
   if (filePath) {
-    const { Producer } = require(`./${filePath}.ts`);
+    const { Producer } = require(`./${filePath}/index.ts`);
     await new Producer(producer, filePath).produce();
   }
 

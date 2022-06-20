@@ -4,10 +4,10 @@ services:
     build:
       dockerfile: ./kafka/Dockerfile
       args:
-        PORT: 9092
+        PORT: 29092
     extra_hosts:
       - "broker:0.0.0.0"
     ports:
-      - "9092:9092"
+      - "29092:29092"
     restart: unless-stopped
 

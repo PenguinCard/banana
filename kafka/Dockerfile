@@ -27,5 +27,7 @@ RUN echo advertised.listeners=PLAINTEXT://broker:$PORT >> config/server.properti
 RUN touch ./kafka.sh
 RUN echo $KAFKA_HOME/bin/zookeeper-server-start.sh -daemon $KAFKA_HOME/config/zookeeper.properties >> ./kafka.sh
 RUN echo exec "$KAFKA_HOME/bin/kafka-server-start.sh" "$KAFKA_HOME/config/server.properties" >> ./kafka.sh
+RUN echo $KAFKA_HOME/bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server broker:$PORT >> ./kafka.sh
+
 ENTRYPOINT [ "sh" ]
 CMD ["kafka.sh"]

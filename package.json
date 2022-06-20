@@ -25,7 +25,11 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.11",
     "kafkajs": "^2.0.2",
+    "moment": "^2.29.3",
+    "puppeteer": "^14.4.1",
     "yargs": "^17.5.1"
   }
 }

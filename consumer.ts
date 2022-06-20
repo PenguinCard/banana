@@ -6,7 +6,7 @@ import { Kafka } from 'kafkajs';
 
   const kafka = new Kafka({
     clientId: 'my-app',
-    brokers: ['broker:9092'],
+    brokers: ['broker:29092'],
   });
 
   const consumer = kafka.consumer({ groupId: 'crawling-group' })
@@ -21,9 +21,10 @@ import { Kafka } from 'kafkajs';
     eachMessage: async ({ topic, partition, message }) => {
       const { value } = message;
       if (value) {
+        console.info(value.toString());
         const data = JSON.parse(value.toString());
         const { filePath, metaData = {} } = data;
-        const { Consumer } = require(`./${filePath}.ts`);
+        const { Consumer } = require(`./${filePath}/index.ts`);
         await new Consumer(metaData).consume(metaData);
       }
     },
