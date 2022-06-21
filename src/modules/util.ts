@@ -1,5 +1,21 @@
+import PriceModel from 'models/Price'
+
 interface KafkaProducer {
   send: Function,
+}
+
+interface Price {
+  country: string,
+  currency: string,
+  date: string,
+  grade: string,
+  priceAvg?: string | null,
+  priceMax?: string | null,
+  priceMin?: string | null,
+  product: string,
+  region: string,
+  unit: string,
+  type: string,
 }
 
 class Producer { 
@@ -12,6 +28,13 @@ class Producer {
   ) {
     this.producer = producer;
     this.filePath = filePath;
+  }
+
+  async assert(assertArray: Array<[condition: boolean, msg: string]>) {
+    const assertObject = assertArray.find(assertObject => !assertObject[0]);
+    if (assertObject) {
+      console.error(assertObject[1]);
+    }
   }
 
   async push(metaData: object) {
@@ -27,7 +50,7 @@ class Producer {
         },
       ],
     })
-  }
+  } 
 }
 
 class Consumer {
@@ -35,6 +58,13 @@ class Consumer {
     const assertObject = assertArray.find(assertObject => !assertObject[0]);
     if (assertObject) {
       console.error(assertObject[1]);
+    }
+  }
+
+  async push(prices: Array<Price>) {
+    if (prices.length > 0) {
+      console.info(`${prices.length} prices will be saved`);
+      await PriceModel.insertMany(prices);
     }
   }
 }

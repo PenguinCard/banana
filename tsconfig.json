@@ -6,7 +6,13 @@
     "moduleResolution": "node",
     "module": "CommonJS",
     "target": "ES6",
-    "allowJs": true
+    "allowJs": true,
+    "paths": {
+      "*": ["./*"]
+    }
   },
-  "exclude": ["**/node_modules/**"]
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "exclude": ["node_modules"]
 }

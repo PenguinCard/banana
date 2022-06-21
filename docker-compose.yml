@@ -11,3 +11,8 @@ services:
       - "29092:29092"
     restart: unless-stopped
 
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"

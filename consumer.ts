@@ -1,8 +1,11 @@
-import { argv } from 'yargs';
 import { Kafka } from 'kafkajs';
+import mongoose from 'mongoose';
 
 (async () => {
-  console.info(JSON.stringify(argv));
+  mongoose.connect('mongodb://localhost:27017/mydb');
+  let db = mongoose.connection;
+  db.on('error', () => console.error("connection is error"));
+  db.once('open', () => "connection is ok")
 
   const kafka = new Kafka({
     clientId: 'my-app',

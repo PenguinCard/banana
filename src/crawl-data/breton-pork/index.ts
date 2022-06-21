@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import xlsx from 'xlsx';
 
-import { Producer, Consumer, range } from "../../modules/util";
+import { Producer, Consumer, range } from "modules/util";
 
 const requestUrl = 'https://www.marche-porc-breton.com/wp-content/themes/marcheduporcbreton/downloadCsv.php';
 

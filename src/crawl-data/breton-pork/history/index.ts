@@ -1,9 +1,8 @@
-import fs from 'fs/promises';
 import axios from 'axios';
 import moment from 'moment';
 import xlsx from 'xlsx';
 
-import { Producer, Consumer, range } from "../../../modules/util";
+import { Producer, Consumer, range } from "modules/util";
 
 const requestUrl = 'https://www.marche-porc-breton.com/wp-content/themes/marcheduporcbreton/downloadCsv.php';
 
@@ -15,10 +14,10 @@ class BretonProducer extends Producer {
 
 class BretonConsumer extends Consumer{
   async consume() {
+    const entries = [];
     const date = moment();
     const date2 = date.format('YYYY-MM-DD');
-    const date1 = '1997-08-01';
-    let text = '';
+    const date1 = '1997-01-01';
     let response: any;
     try {
       const { data } = await axios.get(`${requestUrl}?date1=${date1}&date2=${date2}`, { 
@@ -49,24 +48,27 @@ class BretonConsumer extends Consumer{
 
     for (const idx of range(2, endRowNum)) { 
       const rawDate = sheet[`A${idx}`].w.trim();
-      const rawPriceAvg = sheet[`C${idx}`].w.trim();
-      const priceAvg = rawPriceAvg.replaceAll(',', '.');
+      const priceAvg = sheet[`C${idx}`].w?.trim()?.replaceAll(',', '.') || 0; 
       const date = moment(rawDate, 'M/D/YY').format('YYYY-MM-DD');
 
-      text += `
+      if (!sheet[`C${idx}`].w) {
+        console.error('no price', date, sheet[`C${idx}`].w, sheet[`C${idx}`]);
+      }
+
+      const entry = {
+        date,
+        grade,
+        product,
+        priceAvg,
+        region,
+        unit,
         country: 'FR',
         currency: 'EUR',
-        date: ${date},
-        grade: ${grade},
-        product: ${product},
-        priceAvg: ${priceAvg},
-        rawDate: ${rawDate},
-        region: ${region},
-        unit: ${unit},
-        type: 'w'\n
-      `
+        type: 'w'
+      }
+      entries.push(entry);
     }
-    await fs.writeFile('./result.txt', text);
+    await this.push(entries);
   }
 }
 
