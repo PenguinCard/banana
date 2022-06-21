@@ -24,7 +24,7 @@ import { Kafka } from 'kafkajs';
         console.info(value.toString());
         const data = JSON.parse(value.toString());
         const { filePath, metaData = {} } = data;
-        const { Consumer } = require(`./${filePath}/index.ts`);
+        const { Consumer } = require(`./src/${filePath}/index.ts`);
         await new Consumer(metaData).consume(metaData);
       }
     },

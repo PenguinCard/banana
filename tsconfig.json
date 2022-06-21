@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "noImplicitAny": true,
-    "declaration": true,
-    "esModuleInterop": true,  
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "module": "CommonJS",
-    "target": "es5",
-    "allowJs": true,
-    "moduleResolution": "node"
-  }
+    "target": "ES6",
+    "allowJs": true
+  },
+  "exclude": ["**/node_modules/**"]
 }

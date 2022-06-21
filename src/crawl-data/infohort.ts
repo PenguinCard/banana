@@ -29,7 +29,6 @@ class InfohortConsumer {
     const { html } = metaData;
     const $ = cheerio.load(html);
 
-
     $('tbody').find('tr').slice(2).each((i, tr) => {
       if(i === 0) {
         console.info($(tr).text())

@@ -14,7 +14,7 @@ import { Kafka } from 'kafkajs';
   const [ filePath = '' ] = argv._;
 
   if (filePath) {
-    const { Producer } = require(`./${filePath}/index.ts`);
+    const { Producer } = require(`./src/${filePath}/index.ts`);
     await new Producer(producer, filePath).produce();
   }
 

@@ -30,6 +30,21 @@ class Producer {
   }
 }
 
+class Consumer {
+  async assert(assertArray: Array<[condition: boolean, msg: string]>) {
+    const assertObject = assertArray.find(assertObject => !assertObject[0]);
+    if (assertObject) {
+      console.error(assertObject[1]);
+    }
+  }
+}
+
+function range(start: number, end: number) {
+  return end >= start ? [...Array(end + 1).keys()].slice(start) : [];
+}
+
 export {
   Producer,
+  Consumer,
+  range,
 }

@@ -50,7 +50,7 @@ class testConsumer {
     const tableHeaderTexts: string[][] = [[], [], [], []];
 
     $('tr.xl70').each((trIndex, tr) => {
-      $(tr).find('th').each((thIndex, th) => {
+      $(tr).find('th').each((_i, th) => {
         const thColSpan = Number($(th).attr('colspan')) || 1;
         const thText = $(th).text().replace(/\s+/g, ' ').trim();
         console.log(thColSpan, thText);
