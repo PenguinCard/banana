@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import xlsx from 'xlsx';
 
-import { Producer, Consumer, range } from "modules/util";
+import { Producer, Consumer, range } from 'modules/util';
 
 const requestUrl = 'https://www.marche-porc-breton.com/wp-content/themes/marcheduporcbreton/downloadCsv.php';
 
@@ -12,16 +12,16 @@ class BretonProducer extends Producer {
   }
 }
 
-class BretonConsumer extends Consumer{
+class BretonConsumer extends Consumer {
   async consume() {
     const entries = [];
-    const date = moment();
-    const date2 = date.format('YYYY-MM-DD');
+    const today = moment();
+    const date2 = today.format('YYYY-MM-DD');
     const date1 = '1997-01-01';
     let response: any;
     try {
-      const { data } = await axios.get(`${requestUrl}?date1=${date1}&date2=${date2}`, { 
-        responseType: 'arraybuffer'
+      const { data } = await axios.get(`${requestUrl}?date1=${date1}&date2=${date2}`, {
+        responseType: 'arraybuffer',
       });
       response = Buffer.from(data, 'base64');
     } catch (e) {
@@ -38,17 +38,20 @@ class BretonConsumer extends Consumer{
     ]);
 
     const sheetRange = sheet['!ref'];
-    const [, EndPoint = '2'] = sheetRange.split(':');
-    const endRowNum = Number(EndPoint.replace(/\D/g, ''));
-   
+    if (!sheetRange) {
+      console.error('no range in csv');
+      return;
+    }
+    const endRowNum = Number(sheetRange.split(':')[1].replace(/\D/g, ''));
+
     const product = 'Pork';
     const grade = '56% TMP';
     const region = 'Brittany';
     const unit = '1 kg';
 
-    for (const idx of range(2, endRowNum)) { 
+    for (const idx of range(2, endRowNum + 1)) {
       const rawDate = sheet[`A${idx}`].w.trim();
-      const priceAvg = sheet[`C${idx}`].w?.trim()?.replaceAll(',', '.') || 0; 
+      const priceAvg = sheet[`C${idx}`].w?.trim().replaceAll(',', '.') || 0;
       const date = moment(rawDate, 'M/D/YY').format('YYYY-MM-DD');
 
       if (!sheet[`C${idx}`].w) {
@@ -64,15 +67,15 @@ class BretonConsumer extends Consumer{
         unit,
         country: 'FR',
         currency: 'EUR',
-        type: 'w'
-      }
+        type: 'w',
+      };
       entries.push(entry);
     }
     await this.push(entries);
   }
 }
 
- export {
+export {
   BretonProducer as Producer,
   BretonConsumer as Consumer,
-}
+};

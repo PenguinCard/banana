@@ -13,6 +13,17 @@ services:
 
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     ports:
       - "27017:27017"
+
+  hbase:
+    build:
+      dockerfile: ./hbase/Dockerfile
+      args:
+        MASTER_PORT: 16010
+        CLIENT_PORT: 8080
+    ports:
+      - "16010:16010"
+      - "8080:8080"
+    restart: unless-stopped

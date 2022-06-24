@@ -28,6 +28,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.11",
+    "hbase": "^0.6.1",
     "kafkajs": "^2.0.2",
     "moment": "^2.29.3",
     "mongoose": "^6.4.0",

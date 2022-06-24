@@ -1,7 +1,7 @@
 import * as yargs from 'yargs';
 import { Kafka } from 'kafkajs';
 
-(async () => { 
+(async () => {
   const kafka = new Kafka({
     clientId: 'my-app',
     brokers: ['broker:29092'],
@@ -11,12 +11,12 @@ import { Kafka } from 'kafkajs';
   await producer.connect();
 
   const argv = await yargs.argv;
-  const [ filePath = '' ] = argv._;
+  const [filePath = ''] = argv._;
 
   if (filePath) {
     const { Producer } = require(`./src/${filePath}/index.ts`);
     await new Producer(producer, filePath).produce();
   }
 
-  await producer.disconnect()
+  await producer.disconnect();
 })();

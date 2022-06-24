@@ -1,4 +1,4 @@
-import PriceModel from 'models/Price'
+import PriceModel from 'models/Price';
 
 interface KafkaProducer {
   send: Function,
@@ -18,8 +18,9 @@ interface Price {
   type: string,
 }
 
-class Producer { 
+class Producer {
   filePath: string;
+
   producer: KafkaProducer;
 
   constructor(
@@ -31,9 +32,9 @@ class Producer {
   }
 
   async assert(assertArray: Array<[condition: boolean, msg: string]>) {
-    const assertObject = assertArray.find(assertObject => !assertObject[0]);
-    if (assertObject) {
-      console.error(assertObject[1]);
+    const findAssertObject: [condition: boolean, msg: string] = assertArray.find(assertObject => !assertObject[0]);
+    if (findAssertObject) {
+      console.error(findAssertObject[1]);
     }
   }
 
@@ -77,4 +78,4 @@ export {
   Producer,
   Consumer,
   range,
-}
+};

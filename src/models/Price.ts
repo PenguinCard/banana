@@ -12,6 +12,6 @@ const PriceSchema = new Schema({
   region: String,
   unit: String,
   type: String,
-})
+});
 
 export default model('prices', PriceSchema);
