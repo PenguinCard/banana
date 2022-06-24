@@ -50,8 +50,8 @@ class Producer {
           }),
         },
       ],
-    })
-  } 
+    });
+  }
 }
 
 class Consumer {
