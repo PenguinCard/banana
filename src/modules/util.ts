@@ -71,7 +71,7 @@ class Consumer {
 }
 
 function range(start: number, end: number) {
-  return end >= start ? [...Array(end + 1).keys()].slice(start) : [];
+  return end >= start ? [...Array(end).keys()].slice(start) : [];
 }
 
 export {
