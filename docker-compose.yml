@@ -27,3 +27,11 @@ services:
       - "16010:16010"
       - "8080:8080"
     restart: unless-stopped
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "25432:5432"
+    environment:
+      POSTGRES_PASSWORD: "1234"
