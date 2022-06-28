@@ -4,16 +4,16 @@ interface KafkaProducer {
   send: Function,
 }
 
-interface Price {
+export interface Price {
   country: string,
   currency: string,
   date: string,
-  grade: string,
-  priceAvg?: string | null,
-  priceMax?: string | null,
-  priceMin?: string | null,
+  grade?: string | null,
+  priceAvg?: string | number | null,
+  priceMax?: string | number | null,
+  priceMin?: string | number | null,
   product: string,
-  region: string,
+  region?: string,
   unit: string,
   type: string,
 }
