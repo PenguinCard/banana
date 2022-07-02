@@ -1,8 +1,9 @@
-import axios from 'axios';
 import moment from 'moment';
 import xlsx from 'xlsx';
 
-import { Producer, Consumer, range } from 'modules/util';
+import request from 'modules/request';
+import { range } from 'modules/util';
+import { Producer, Consumer } from 'modules/jobs';
 
 const requestUrl = 'https://www.marche-porc-breton.com/wp-content/themes/marcheduporcbreton/downloadCsv.php';
 
@@ -20,14 +21,15 @@ class BretonConsumer extends Consumer {
     const date1 = '1997-01-01';
     let response: any;
     try {
-      const { data } = await axios.get(`${requestUrl}?date1=${date1}&date2=${date2}`, {
-        responseType: 'arraybuffer',
+      response = await request({
+        method: 'GET',
+        url: `${requestUrl}?date1=${date1}&date2=${date2}`,
+        type: 'buffer',
       });
-      response = Buffer.from(data, 'base64');
     } catch (e) {
       console.error(`${requestUrl}?date1=${date1}&date2=${date2}`, e);
     }
-
+  
     const workbook = xlsx.read(response);
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];

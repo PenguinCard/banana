@@ -19,6 +19,8 @@ export interface Price {
 }
 
 class Producer {
+  static browserOption: boolean = false;
+
   filePath: string;
 
   producer: KafkaProducer;
@@ -56,6 +58,8 @@ class Producer {
 }
 
 class Consumer {
+  static browserOption: boolean = false;
+
   async assert(assertArray: Array<[boolean, string]>) {
     const findAssertObject: [boolean, string] = assertArray.find(([isOk]) => !isOk);
     if (findAssertObject) {
@@ -75,10 +79,7 @@ class Consumer {
   }
 }
 
-function range(start: number, end: number) {
-  return end >= start ? [...Array(end).keys()].slice(start) : [];
+export {
+  Producer,
+  Consumer,
 }
-
-export { 
-  range,
-};

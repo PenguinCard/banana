@@ -16,9 +16,10 @@ RUN rm $HBASE_HOME-bin.tar.gz
 
 ENV HBASE_HOME=/${HBASE_HOME}
 
-WORKDIR ${HBASE_HOME}
+WORKDIR ${HBASE_HOME}/bin
 
 RUN touch ./hbase.sh
 RUN echo exec "$HBASE_HOME/bin/hbase master start" >> ./hbase.sh
 
-ENTRYPOINT ["bash", "hbase.sh", "&&", "bash"]
+CMD bash hbase.sh && bash
+

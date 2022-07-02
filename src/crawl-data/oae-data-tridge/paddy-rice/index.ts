@@ -2,7 +2,8 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import moment from 'moment';
 
-import { Producer, Consumer, Price } from 'modules/util';
+import { Price } from 'modules/util';
+import { Producer, Consumer } from 'modules/jobs';
 
 const requestUrl = 'http://www.oae.go.th/view/1/ราคาสินค้าเกษตร/TH-TH';
 const THAI_SOLAR_CALENDER = 543;

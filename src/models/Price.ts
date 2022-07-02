@@ -12,6 +12,10 @@ const PriceSchema = new Schema({
   region: String,
   unit: String,
   type: String,
+  created_at: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 export default model('prices', PriceSchema);
