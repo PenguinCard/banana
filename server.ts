@@ -1,26 +1,25 @@
 import Fastify from 'fastify';
 import mongo from '@fastify/mongodb';
 
-const fastify = Fastify({
+const app = Fastify({
   logger: true,
 })
 
-fastify.register(mongo, {
+app.register(mongo, {
   forceClose: true,
   url: 'mongodb://localhost:27017/mydb',
 })
 
-fastify.get('/', async (_req, res) => {
+app.get('/', async (_req, res) => {
   res.send({ hello: 'world' });
 })
 
-fastify.get('/price/all', function (_req, res) {
-  const prices = this.mongo.db.collection('prices');
-  console.log(prices);
-  const rst = prices.find({});
+app.get('/price/all', async (_req, res) => {
+  const prices = app.mongo.db.collection('prices');
+  const rst = await prices.find({}).toArray();
   res.send(rst);
 })
 
-fastify.listen({ port: 9999 }, (err, address) => {
+app.listen({ port: 9999 }, (err, address) => {
   if (err) throw new Error(`${address} ${err}`);
 })

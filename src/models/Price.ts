@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 
 const PriceSchema = new Schema({
+  task: String,
   country: String,
   currency: String,
   date: String,
