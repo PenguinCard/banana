@@ -1,3 +1,4 @@
+import moment from 'moment';
 import PriceModel from 'models/Price';
 
 interface KafkaProducer {
@@ -58,6 +59,8 @@ class Producer {
 }
 
 class Consumer {
+  static pathName: string = '';
+
   static browserOption: boolean = false;
 
   async assert(assertArray: Array<[boolean, string]>) {
@@ -68,7 +71,10 @@ class Consumer {
     return Boolean(findAssertObject);
   }
 
-  archive() {
+  async archive(_doc: string | Buffer, seq:number = 1, date: string = '', ext: string = 'html', version: number = 1) {
+    const today = moment().format('YYYY-MM-DD');
+    const path = `archive/crawl-data/${Consumer.pathName}/v${version}/${date ? `${date}/` : ''}${today}/s${seq}.${ext}`;
+    console.info(`archive path : ${path}`); 
   }
 
   async push(prices: Array<Price>) {

@@ -1,7 +1,7 @@
 interface Args {
   url: string,
-  type: string,
-  method: string,
+  type?: string,
+  method?: string,
 }
 
 export default async function request(args: string | Args) {
@@ -15,7 +15,7 @@ export default async function request(args: string | Args) {
       url = args;
       response = await fetch(args);
     } else {
-      ({ method, type, url } = args);
+      ({ method = 'GET', type = 'text', url } = args);
       response = await fetch(url, {
         method,
       });
