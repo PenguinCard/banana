@@ -18,10 +18,11 @@ class EislemConsumer extends Consumer {
   }
   
   async consume() {
+    const metaDate = moment().subtract(2, 'days').format('YYYY-MM-DD');
     let response: any;
     try {
       response = await request({
-        url: 'https://eislem.izmir.bel.tr/tr/BalikHalFiyatlari/',
+        url: `https://eislem.izmir.bel.tr/tr/BalikHalFiyatlari/ExceleAktar/${metaDate}`,
         type: 'buffer',
       })
     } catch (e) {
@@ -35,6 +36,8 @@ class EislemConsumer extends Consumer {
     const sheet = workbook.Sheets[sheetName];
     
     console.log(JSON.stringify(sheet));
+
+    
   }
 }
 

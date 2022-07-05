@@ -16,9 +16,7 @@ export default async function request(args: string | Args) {
       response = await fetch(args);
     } else {
       ({ method = 'GET', type = 'text', url } = args);
-      response = await fetch(url, {
-        method,
-      });
+      response = await fetch(url, { method });
     }
 
     if (response.status !== 200) {
