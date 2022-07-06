@@ -22,6 +22,8 @@ export interface Price {
 class Producer {
   static browserOption: boolean = false;
 
+  metaDate: string;
+
   filePath: string;
 
   producer: KafkaProducer;
@@ -29,9 +31,11 @@ class Producer {
   constructor(
     producer: KafkaProducer,
     filePath: string,
+    metaDate: string = moment().subtract(1, 'days').format('YYYY-MM-DD'),
   ) {
     this.producer = producer;
     this.filePath = filePath;
+    this.metaDate = metaDate;
   }
 
   async assert(assertArray: Array<[boolean, string]>) {
@@ -49,8 +53,9 @@ class Producer {
         {
           partition: 0,
           value: JSON.stringify({
-            filePath: this.filePath,
             metaData,
+            filePath: this.filePath,
+            metaDate: this.metaDate
           }),
         },
       ],
@@ -62,6 +67,12 @@ class Consumer {
   static pathName: string = '';
 
   static browserOption: boolean = false;
+
+  metaDate: string;
+
+  constructor(metaDate: string) {
+    this.metaDate = metaDate
+  }
 
   async assert(assertArray: Array<[boolean, string]>) {
     const findAssertObject: [boolean, string] = assertArray.find(([isOk]) => !isOk);

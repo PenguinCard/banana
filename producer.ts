@@ -11,11 +11,25 @@ import { Kafka } from 'kafkajs';
   await producer.connect();
 
   const argv = await yargs.argv;
+  console.log(argv);
   const [filePath = ''] = argv._;
 
   if (filePath) {
     const { Producer } = require(`./src/${filePath}/index.ts`);
-    await new Producer(producer, filePath).produce();
+  
+    if (argv.date) {
+      await new Producer(
+        producer,
+        filePath,
+        argv.date,
+      ).produce();
+    } else if (argv.range) {
+    } else {
+      await new Producer(
+        producer,
+        filePath,
+      ).produce();
+    }
   }
 
   await producer.disconnect();

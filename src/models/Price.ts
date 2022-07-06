@@ -12,6 +12,7 @@ const PriceSchema = new Schema({
   product: String,
   region: String,
   unit: String,
+  variety: String,
   type: String,
   created_at: {
     type: Date,

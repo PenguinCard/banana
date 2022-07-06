@@ -23,9 +23,9 @@ import mongoose from 'mongoose';
       if (value) {
         console.info(`topic: ${topic}, partition: ${partition}`);
         const data = JSON.parse(value.toString());
-        const { filePath, metaData = {} } = data;
+        const { filePath, metaData = {}, metaDate } = data;
         const { Consumer } = require(`./src/${filePath}/index.ts`);
-        await new Consumer(metaData).consume(metaData);
+        await new Consumer(metaDate).consume(metaData);
       }
     },
   });
