@@ -1,5 +1,8 @@
 import * as yargs from 'yargs';
+import moment from 'moment';
 import { Kafka } from 'kafkajs';
+
+import { delay } from 'modules/util';
 
 (async () => {
   const kafka = new Kafka({
@@ -24,6 +27,25 @@ import { Kafka } from 'kafkajs';
         argv.date,
       ).produce();
     } else if (argv.range) {
+      const [startRawDate, endRawDate] = String(argv.range).split('~');
+      if (startRawDate && endRawDate) {
+        try {
+          let metaDate = moment(startRawDate);
+          const endDate = moment(endRawDate);
+          while (metaDate < endDate) {
+            const currentDate = metaDate.format('YYYY-MM-DD');
+            console.info(`date ${currentDate}`);
+            await new Producer(
+              producer,
+              filePath,
+              currentDate,
+            ).produce();
+            await delay(500);
+            metaDate.add(1, 'days');
+          }
+        } catch (e) {
+        }
+      }
     } else {
       await new Producer(
         producer,

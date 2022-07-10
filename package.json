@@ -30,6 +30,7 @@
     "cheerio": "^1.0.0-rc.11",
     "fastify": "^4.2.0",
     "kafkajs": "^2.0.2",
+    "lodash": "^4.17.21",
     "moment": "^2.29.3",
     "mongoose": "^6.4.0",
     "puppeteer": "^14.4.1",

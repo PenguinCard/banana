@@ -79,6 +79,11 @@ function range(start: number, end: number) {
   return end >= start ? [...Array(end).keys()].slice(start) : [];
 }
 
+async function delay(num: number) {
+  await new Promise(resolve => setTimeout(resolve, num));
+}
+
 export { 
+  delay,
   range,
 };
