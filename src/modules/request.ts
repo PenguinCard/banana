@@ -1,3 +1,5 @@
+import qs from 'querystring';
+
 interface Args {
   url: string,
   type?: string,
@@ -16,10 +18,12 @@ export default async function request(args: string | Args) {
       response = await fetch(args);
     } else {
       ({ method = 'GET', type = 'text', url } = args);
-      response = await fetch(url, { method });
+      response = await fetch(url, { 
+        method, 
+      });
     }
 
-    if (response.status !== 200) {
+    if (!response.ok) {
       throw new Error(`response error ${response.status} ${response.statusText}`);
     }
 
@@ -35,6 +39,6 @@ export default async function request(args: string | Args) {
     }
   } catch (e) {
     console.error(`fetch error(url: ${url}) :${e}`);
-    throw new Error(`error(url: ${url}): ${e}`);
+    throw new Error(`error(url: '${url}' ): ${e}`);
   }
 }
