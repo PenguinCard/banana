@@ -1,26 +1,39 @@
-import qs from 'querystring';
-
 interface Args {
   url: string,
+  body?: string | object
   type?: string,
   method?: string,
+  headers?: object,
 }
 
 export default async function request(args: string | Args) {
   let response: Response;
+  let bodyOptions;
   let url: string;
   let method: string = 'GET';
   let type: string = 'text';
+  let headerOptions;
 
   try {
     if (typeof args === 'string') {
       url = args;
       response = await fetch(args);
     } else {
-      ({ method = 'GET', type = 'text', url } = args);
-      response = await fetch(url, { 
+      ({ method = 'GET', type = 'text', url, headers: headerOptions, body: bodyOptions } = args);
+      const requestObject: any = { 
         method, 
-      });
+      };
+      if (bodyOptions) {
+        bodyOptions = typeof bodyOptions === 'object' ? JSON.stringify(bodyOptions) : bodyOptions;
+        const body: BodyInit = bodyOptions;
+        requestObject.body = body;
+      }
+      if (headerOptions) {
+        headerOptions = Object.entries(headerOptions).map(([key, value]) => [key, String(value)]); 
+        const headers: HeadersInit = headerOptions;
+        requestObject.headers = headers;
+      }
+      response = await fetch(url, requestObject);
     }
 
     if (!response.ok) {
