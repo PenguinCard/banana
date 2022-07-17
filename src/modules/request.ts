@@ -7,12 +7,12 @@ interface Args {
 }
 
 export default async function request(args: string | Args) {
-  let response: Response;
+  let headerOptions;
   let bodyOptions;
+  let response: Response;
   let url: string;
   let method: string = 'GET';
   let type: string = 'text';
-  let headerOptions;
 
   try {
     if (typeof args === 'string') {
@@ -41,6 +41,8 @@ export default async function request(args: string | Args) {
     }
 
     switch (type) {
+      case 'blob':
+        return response.blob();
       case 'buffer':
         return Buffer.from(await response.arrayBuffer());
       case 'text':
