@@ -66,7 +66,7 @@ export default async function request(args: string | Args) {
         requestObject.body = form;
       }
 
-      if (headerOptions) {
+      if (Object.keys(contentType).length || headerOptions) {
         headerOptions = Object.entries({
           ...contentType,
           ...headerOptions
