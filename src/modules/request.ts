@@ -1,35 +1,76 @@
 interface Args {
-  url: string,
-  body?: string | object
-  type?: string,
-  method?: string,
-  headers?: object,
+  url: string;
+  body?: string | object;
+  form?: string | object;
+  type?: string;
+  method?: string;
+  headers?: object;
+}
+
+interface ContentType {
+  'Content-Type'?: string;
 }
 
 export default async function request(args: string | Args) {
   let headerOptions;
   let bodyOptions;
+  let formOptions;
   let response: Response;
   let url: string;
   let method: string = 'GET';
   let type: string = 'text';
+  let contentType: ContentType = {};
 
   try {
     if (typeof args === 'string') {
       url = args;
       response = await fetch(args);
     } else {
-      ({ method = 'GET', type = 'text', url, headers: headerOptions, body: bodyOptions } = args);
+      ({
+        url,
+        method = 'GET',
+        type = 'text',
+        headers: headerOptions,
+        body: bodyOptions,
+        form: formOptions,
+      } = args);
       const requestObject: any = { 
         method, 
       };
+
       if (bodyOptions) {
-        bodyOptions = typeof bodyOptions === 'object' ? JSON.stringify(bodyOptions) : bodyOptions;
+        switch (typeof bodyOptions) {
+          case 'object':
+            bodyOptions = JSON.stringify(bodyOptions);
+            break;
+          case 'string':
+            break;
+          default:
+            throw new Error('Check to body type(string, object)')
+        }
         const body: BodyInit = bodyOptions;
+        contentType = { 'Content-Type': 'application/json' };
         requestObject.body = body;
+      } else if (formOptions) {
+        switch (typeof formOptions) {
+          case 'object':
+            formOptions = new URLSearchParams(Object.entries(formOptions)).toString();
+            break;
+          case 'string':
+            break;
+          default:
+            throw new Error('Check to form type(string, object)')
+        }
+        const form: BodyInit = formOptions;
+        contentType = { 'Content-Type': 'application/x-www-form-urlencoded' };
+        requestObject.body = form;
       }
+
       if (headerOptions) {
-        headerOptions = Object.entries(headerOptions).map(([key, value]) => [key, String(value)]); 
+        headerOptions = Object.entries({
+          ...contentType,
+          ...headerOptions
+        }).map(([key, value]) => [key, String(value)]); 
         const headers: HeadersInit = headerOptions;
         requestObject.headers = headers;
       }
@@ -50,7 +91,7 @@ export default async function request(args: string | Args) {
       case 'json':
         return response.json();
       default:
-        throw new Error('no type in request');
+        return response;
     }
   } catch (e) {
     console.error(`fetch error(url: ${url}) :${e}`);
